@@ -2,7 +2,11 @@
 RemitAI — Kenya Diaspora Services Assistant
 Remittances, property, dual citizenship, diaspora financial planning.
 """
-import json, urllib.request, ssl
+import json
+import ssl
+import urllib.error
+import urllib.request
+
 import streamlit as st
 
 st.set_page_config(
@@ -15,7 +19,7 @@ st.set_page_config(
 def get_key():
     try:
         return st.secrets.get("GOOGLE_API_KEY") or st.secrets.get("GEMINI_API_KEY")
-    except Exception:
+    except Exception:  # noqa: BLE001 - any secrets problem simply means no key is configured
         return None
 
 def gemini(prompt: str, key: str, max_tokens: int = 1200) -> str:
@@ -28,7 +32,6 @@ def gemini(prompt: str, key: str, max_tokens: int = 1200) -> str:
         data=json.dumps(body).encode(),
         headers={"Content-Type": "application/json"})
     try:
-        import ssl, urllib.error
         with urllib.request.urlopen(req_obj, timeout=25,
                                      context=ssl.create_default_context()) as r:
             d = json.loads(r.read())
@@ -36,7 +39,7 @@ def gemini(prompt: str, key: str, max_tokens: int = 1200) -> str:
         if not candidates:
             return "_No response. Try again._"
         return candidates[0]["content"]["parts"][0]["text"]
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - intentional UI fallback; the error type is shown, not hidden
         code = getattr(e, 'code', '')
         return f"_AI unavailable{f' (HTTP {code})' if code else ''}: {type(e).__name__}_"
 
@@ -362,8 +365,7 @@ elif mode == "📱 eCitizen Remote Services":
         availability = "✅ Can be done remotely" if svc["remote"] else "⚠️ Physical presence required"
         st.markdown(f"**{availability}**")
         st.markdown(f"**Portal:** [{svc['portal']}](https://ecitizen.go.ke)")
-        st.markdown(f"**Documents needed:**
-{svc['docs']}")
+        st.markdown(f"**Documents needed:**\n{svc['docs']}")
     with col2:
         st.markdown(f"**Processing time:** {svc['time']}")
         st.markdown(f"**Cost:** {svc['cost']}")
@@ -404,7 +406,7 @@ else:
         st.session_state.remit_chat.append({"role":"user","content":user_q})
         with st.chat_message("user"):
             st.markdown(user_q)
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant"):  # noqa: SIM117 - merging would re-indent a multi-line prompt string
             with st.spinner("Thinking..."):
                 history = "\n".join(f"{m['role']}: {m['content']}" for m in st.session_state.remit_chat[-6:])
                 prompt = f"""You are RemitAI, a Kenya diaspora services expert. You specialise in remittances, Kenya property law, dual citizenship (Constitution 2010), eCitizen services, diaspora financial planning, and SACCO/investment products.
@@ -416,7 +418,7 @@ Respond practically. Use KES amounts and Kenya government references. Note when 
                     resp = gemini(prompt, key)
                     st.markdown(resp)
                     st.session_state.remit_chat.append({"role":"assistant","content":resp})
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001 - the error is shown to the user
                     st.error(f"AI error: {e}")
 
 st.divider()
