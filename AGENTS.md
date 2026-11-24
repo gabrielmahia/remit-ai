@@ -6,7 +6,7 @@ and conversational AI for planning how much to send home — and when.
 
 ## Architecture
 - `app.py` — Streamlit single-file app
-- Gemini REST API (no SDK) — falls back across gemini-2.0-flash → 1.5-flash → 1.5-flash-8b
+- Gemini REST API (no SDK) — uses gemini-3.5-flash-lite (the 1.5 and 2.0 models it used were shut down by Google)
 - Provider rates are static reference data (not live — direct users to provider sites)
 
 ## AI Behaviour Rules
