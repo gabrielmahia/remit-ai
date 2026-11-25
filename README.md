@@ -2,7 +2,7 @@
 
 > Smart remittance planning for Kenyans abroad. FX rates, M-Pesa transaction costs, provider comparison, and a conversational AI that helps you plan how much to send home — and when.
 
-[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
+[![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Live-red)](https://remit-ai.streamlit.app)
 [![Gemini](https://img.shields.io/badge/Gemini-Free%20tier-blue)](https://aistudio.google.com)
 
@@ -52,5 +52,5 @@ streamlit run app.py
 ## IP & Collaboration
 
 © 2026 Gabriel Mahia · [contact@aikungfu.dev](mailto:contact@aikungfu.dev)
-License: CC BY-NC-ND 4.0
+License: PolyForm Noncommercial 1.0.0
 Not affiliated with M-Pesa Africa, Safaricom, or any remittance provider.
